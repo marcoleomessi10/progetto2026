@@ -23,3 +23,15 @@
 hs_err_pid*
 replay_pid*
 /build/
+
+# === ECCEZIONE DATABASE (FONDAMENTALE) ===
+# Impedisce a Git di bloccare il driver del database nella cartella lib
+!WebContent/WEB-INF/lib/*.jar
+
+# === REGOLE JAVASCRIPT ===
+node_modules/
+/jspm_packages/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
