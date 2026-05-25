@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-    <Resource name="jdbc/storage"
+    <Resource name="jdbc/shoe_store"
         auth="Container"
         driverClassName="com.mysql.cj.jdbc.Driver"
         type="javax.sql.DataSource"
@@ -9,5 +9,5 @@
 		maxWaitMillis="10000"
         username="root"
         password="root"
-        url="jdbc:mysql://localhost:3306/storage?serverTimezone=UTC"/>
+        url="jdbc:mysql://localhost:3306/shoe_store?serverTimezone=UTC"/>
 </Context>
