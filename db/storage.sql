@@ -44,6 +44,7 @@ CREATE TABLE products (
     quantita_disponibile INT NOT NULL DEFAULT 0,
     numero_scarpa_min INT DEFAULT 36,
     numero_scarpa_max INT DEFAULT 46,
+    genere ENUM('UOMO', 'DONNA', 'UNISEX') DEFAULT 'UNISEX',
     immagine VARCHAR(255),
     category_id INT,
     attivo BOOLEAN DEFAULT TRUE,
