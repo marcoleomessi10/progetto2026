@@ -1,5 +1,12 @@
 package it.dao;
 
-public class UserDao {
+import it.model.User;
 
+public interface UserDao {
+
+    User doRetrieveByEmailPassword(String email, String passwordHash);
+
+    User doRetrieveByEmail(String email);
+
+    void doSave(User user);
 }
