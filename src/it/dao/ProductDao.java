@@ -8,6 +8,8 @@ public interface ProductDao {
 
     List<Product> doRetrieveAll();
 
+    List<Product> doRetrieveAllForAdmin();
+
     Product doRetrieveById(int id);
 
     List<Product> doRetrieveByName(String name);
