@@ -24,7 +24,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> doRetrieveAll() 
     {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE attivo = TRUE";
+        String sql = "SELECT * FROM products WHERE active = TRUE";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -35,18 +35,49 @@ public class ProductDaoImpl implements ProductDao {
                 Product p = new Product();
 
                 p.setId(rs.getInt("id"));
-                p.setNome(rs.getString("nome"));
-                p.setDescrizione(rs.getString("descrizione"));
-                p.setMarca(rs.getString("marca"));
-                p.setPrezzo(rs.getDouble("prezzo"));
-                p.setQuantitaDisponibile(rs.getInt("quantita_disponibile"));
-                p.setNumeroScarpaMin(rs.getInt("numero_scarpa_min"));
-                p.setNumeroScarpaMax(rs.getInt("numero_scarpa_max"));
-                p.setGenere(rs.getString("genere"));
-                p.setImmagine(rs.getString("immagine"));
-                p.setCategoryId(rs.getInt("category_id"));
-                p.setAttivo(rs.getBoolean("attivo"));
-                p.setDataCreazione(rs.getTimestamp("data_creazione"));
+                p.setNome(rs.getString("name"));
+                p.setDescrizione(rs.getString("description"));
+                p.setMarca(rs.getString("brand"));
+                p.setPrezzo(rs.getDouble("price"));
+                p.setQuantitaDisponibile(rs.getInt("stock"));
+                p.setCategoria(rs.getString("category"));
+                p.setImmagine(rs.getString("image"));
+                p.setAttivo(rs.getBoolean("active"));
+                p.setDataCreazione(rs.getTimestamp("created_at"));
+
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Product> doRetrieveAllForAdmin() 
+    {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM products ORDER BY id DESC";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("name"));
+                p.setDescrizione(rs.getString("description"));
+                p.setMarca(rs.getString("brand"));
+                p.setPrezzo(rs.getDouble("price"));
+                p.setQuantitaDisponibile(rs.getInt("stock"));
+                p.setCategoria(rs.getString("category"));
+                p.setImmagine(rs.getString("image"));
+                p.setAttivo(rs.getBoolean("active"));
+                p.setDataCreazione(rs.getTimestamp("created_at"));
 
                 list.add(p);
             }
@@ -72,18 +103,15 @@ public class ProductDaoImpl implements ProductDao {
                 Product p = new Product();
 
                 p.setId(rs.getInt("id"));
-                p.setNome(rs.getString("nome"));
-                p.setDescrizione(rs.getString("descrizione"));
-                p.setMarca(rs.getString("marca"));
-                p.setPrezzo(rs.getDouble("prezzo"));
-                p.setQuantitaDisponibile(rs.getInt("quantita_disponibile"));
-                p.setNumeroScarpaMin(rs.getInt("numero_scarpa_min"));
-                p.setNumeroScarpaMax(rs.getInt("numero_scarpa_max"));
-                p.setGenere(rs.getString("genere"));
-                p.setImmagine(rs.getString("immagine"));
-                p.setCategoryId(rs.getInt("category_id"));
-                p.setAttivo(rs.getBoolean("attivo"));
-                p.setDataCreazione(rs.getTimestamp("data_creazione"));
+                p.setNome(rs.getString("name"));
+                p.setDescrizione(rs.getString("description"));
+                p.setMarca(rs.getString("brand"));
+                p.setPrezzo(rs.getDouble("price"));
+                p.setQuantitaDisponibile(rs.getInt("stock"));
+                p.setCategoria(rs.getString("category"));
+                p.setImmagine(rs.getString("image"));
+                p.setAttivo(rs.getBoolean("active"));
+                p.setDataCreazione(rs.getTimestamp("created_at"));
 
                 return p;
             }
@@ -98,7 +126,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> doRetrieveByName(String name) 
     {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE nome LIKE ? AND attivo = TRUE";
+        String sql = "SELECT * FROM products WHERE name LIKE ? AND active = TRUE";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -110,9 +138,11 @@ public class ProductDaoImpl implements ProductDao {
                 Product p = new Product();
 
                 p.setId(rs.getInt("id"));
-                p.setNome(rs.getString("nome"));
-                p.setPrezzo(rs.getDouble("prezzo"));
-                p.setImmagine(rs.getString("immagine"));
+                p.setNome(rs.getString("name"));
+                p.setMarca(rs.getString("brand"));
+                p.setPrezzo(rs.getDouble("price"));
+                p.setCategoria(rs.getString("category"));
+                p.setImmagine(rs.getString("image"));
 
                 list.add(p);
             }
@@ -127,7 +157,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> doRetrieveByCategory(int categoryId) 
     {
         List<Product> list = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE category_id = ? AND attivo = TRUE";
+        String sql = "SELECT * FROM products WHERE category = (SELECT name FROM categories WHERE id = ?) AND active = TRUE";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -139,9 +169,11 @@ public class ProductDaoImpl implements ProductDao {
                 Product p = new Product();
 
                 p.setId(rs.getInt("id"));
-                p.setNome(rs.getString("nome"));
-                p.setPrezzo(rs.getDouble("prezzo"));
-                p.setImmagine(rs.getString("immagine"));
+                p.setNome(rs.getString("name"));
+                p.setMarca(rs.getString("brand"));
+                p.setPrezzo(rs.getDouble("price"));
+                p.setCategoria(rs.getString("category"));
+                p.setImmagine(rs.getString("image"));
 
                 list.add(p);
             }
@@ -156,8 +188,7 @@ public class ProductDaoImpl implements ProductDao {
     public void doSave(Product p) 
     {
         String sql = "INSERT INTO products "
-                + "(nome, descrizione, marca, prezzo, quantita_disponibile, "
-                + "numero_scarpa_min, numero_scarpa_max, genere, immagine, category_id) "
+                + "(name, description, brand, price, category, quantity, stock, image, image_path, active) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
@@ -167,12 +198,12 @@ public class ProductDaoImpl implements ProductDao {
             ps.setString(2, p.getDescrizione());
             ps.setString(3, p.getMarca());
             ps.setDouble(4, p.getPrezzo());
-            ps.setInt(5, p.getQuantitaDisponibile());
-            ps.setInt(6, p.getNumeroScarpaMin());
-            ps.setInt(7, p.getNumeroScarpaMax());
-            ps.setString(8, p.getGenere());
-            ps.setString(9, p.getImmagine());
-            ps.setInt(10, p.getCategoryId());
+            ps.setString(5, p.getCategoria());
+            ps.setInt(6, p.getQuantitaDisponibile());
+            ps.setInt(7, p.getQuantitaDisponibile());
+            ps.setString(8, p.getImmagine());
+            ps.setString(9, "images/" + p.getImmagine());
+            ps.setBoolean(10, p.isAttivo());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -184,8 +215,8 @@ public class ProductDaoImpl implements ProductDao {
     public void doUpdate(Product p) 
     {
         String sql = "UPDATE products SET "
-                + "nome = ?, descrizione = ?, marca = ?, prezzo = ?, quantita_disponibile = ?, "
-                + "numero_scarpa_min = ?, numero_scarpa_max = ?, genere = ?, immagine = ?, category_id = ?, attivo = ? "
+                + "name = ?, description = ?, brand = ?, price = ?, category = ?, quantity = ?, "
+                + "stock = ?, image = ?, image_path = ?, active = ? "
                 + "WHERE id = ?";
 
         try (Connection con = ds.getConnection();
@@ -195,14 +226,13 @@ public class ProductDaoImpl implements ProductDao {
             ps.setString(2, p.getDescrizione());
             ps.setString(3, p.getMarca());
             ps.setDouble(4, p.getPrezzo());
-            ps.setInt(5, p.getQuantitaDisponibile());
-            ps.setInt(6, p.getNumeroScarpaMin());
-            ps.setInt(7, p.getNumeroScarpaMax());
-            ps.setString(8, p.getGenere());
-            ps.setString(9, p.getImmagine());
-            ps.setInt(10, p.getCategoryId());
-            ps.setBoolean(11, p.isAttivo());
-            ps.setInt(12, p.getId());
+            ps.setString(5, p.getCategoria());
+            ps.setInt(6, p.getQuantitaDisponibile());
+            ps.setInt(7, p.getQuantitaDisponibile());
+            ps.setString(8, p.getImmagine());
+            ps.setString(9, "images/" + p.getImmagine());
+            ps.setBoolean(10, p.isAttivo());
+            ps.setInt(11, p.getId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -213,13 +243,14 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateQuantity(int productId, int quantity) 
     {
-        String sql = "UPDATE products SET quantita_disponibile = ? WHERE id = ?";
+        String sql = "UPDATE products SET quantity = ?, stock = ? WHERE id = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, quantity);
-            ps.setInt(2, productId);
+            ps.setInt(2, quantity);
+            ps.setInt(3, productId);
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -230,7 +261,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void doDelete(int id) 
     {
-        String sql = "UPDATE products SET attivo = FALSE WHERE id = ?";
+        String sql = "UPDATE products SET active = FALSE WHERE id = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
