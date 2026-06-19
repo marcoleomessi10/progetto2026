@@ -5,10 +5,10 @@ public class OrderItem {
     private int id;
     private int orderId;
     private int productId;
-
+    
     private String nomeProdotto;
     private String marcaProdotto;
-
+    
     private int taglia;
     private double prezzoAcquisto;
     private int quantita;
