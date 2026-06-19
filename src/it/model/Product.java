@@ -14,6 +14,7 @@ public class Product {
     private int numeroScarpaMax;
     private String genere; 
     private String immagine;
+    private String categoria;
     private int categoryId;
     private boolean attivo;
     private Timestamp dataCreazione;
@@ -89,6 +90,12 @@ public class Product {
     public void setImmagine(String immagine) { 
     	this.immagine = immagine; 
     	}
+    public String getCategoria() {
+        return categoria;
+        }
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+        }
     public int getCategoryId() {
     	return categoryId; 
     	}
