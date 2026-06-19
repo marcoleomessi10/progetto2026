@@ -11,7 +11,13 @@ public interface OrderDao {
 
     void doSaveOrderItem(OrderItem item);
 
+    Order doRetrieveById(int id);
+
+    List<OrderItem> doRetrieveItemsByOrder(int orderId);
+
     List<Order> doRetrieveByUser(int userId);
+
+    List<Order> doRetrieveByUserAndDateRange(int userId, String startDate, String endDate);
 
     List<Order> doRetrieveAll();
 

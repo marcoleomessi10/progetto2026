@@ -26,7 +26,7 @@ public class OrderDaoImpl implements OrderDao {
     public int doSaveOrder(Order o) 
     {
         String sql = "INSERT INTO orders "
-                + "(user_id, data_ordine, totale, indirizzo_spedizione, metodo_pagamento, stato) "
+                + "(user_id, order_date, total, shipping_address, payment_method, status) "
                 + "VALUES (?, NOW(), ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
@@ -55,7 +55,7 @@ public class OrderDaoImpl implements OrderDao {
     public void doSaveOrderItem(OrderItem i) 
     {
         String sql = "INSERT INTO order_items "
-                + "(order_id, product_id, nome_prodotto, marca_prodotto, taglia, prezzo_acquisto, quantita, subtotale) "
+                + "(order_id, product_id, product_name, product_brand, size, purchase_price, quantity, subtotal) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
@@ -77,10 +77,65 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public Order doRetrieveById(int id) 
+    {
+        String sql = "SELECT * FROM orders WHERE id = ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return mapOrder(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<OrderItem> doRetrieveItemsByOrder(int orderId) 
+    {
+        List<OrderItem> list = new ArrayList<>();
+        String sql = "SELECT * FROM order_items WHERE order_id = ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                OrderItem item = new OrderItem();
+
+                item.setId(rs.getInt("id"));
+                item.setOrderId(rs.getInt("order_id"));
+                item.setProductId(rs.getInt("product_id"));
+                item.setNomeProdotto(rs.getString("product_name"));
+                item.setMarcaProdotto(rs.getString("product_brand"));
+                item.setTaglia(rs.getInt("size"));
+                item.setPrezzoAcquisto(rs.getDouble("purchase_price"));
+                item.setQuantita(rs.getInt("quantity"));
+                item.setSubtotale(rs.getDouble("subtotal"));
+
+                list.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    @Override
     public List<Order> doRetrieveByUser(int userId) 
     {
         List<Order> list = new ArrayList<>();
-        String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY data_ordine DESC";
+        String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_date DESC";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -89,17 +144,32 @@ public class OrderDaoImpl implements OrderDao {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Order o = new Order();
+                list.add(mapOrder(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-                o.setId(rs.getInt("id"));
-                o.setUserId(rs.getInt("user_id"));
-                o.setDataOrdine(rs.getTimestamp("data_ordine"));
-                o.setTotale(rs.getDouble("totale"));
-                o.setIndirizzoSpedizione(rs.getString("indirizzo_spedizione"));
-                o.setMetodoPagamento(rs.getString("metodo_pagamento"));
-                o.setStato(rs.getString("stato"));
+        return list;
+    }
 
-                list.add(o);
+    @Override
+    public List<Order> doRetrieveByUserAndDateRange(int userId, String startDate, String endDate) 
+    {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE user_id = ? AND order_date BETWEEN ? AND ? ORDER BY order_date DESC";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.setString(2, startDate);
+            ps.setString(3, endDate);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(mapOrder(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,7 +182,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> doRetrieveAll() 
     {
         List<Order> list = new ArrayList<>();
-        String sql = "SELECT * FROM orders ORDER BY data_ordine DESC";
+        String sql = "SELECT * FROM orders ORDER BY order_date DESC";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -120,17 +190,7 @@ public class OrderDaoImpl implements OrderDao {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Order o = new Order();
-
-                o.setId(rs.getInt("id"));
-                o.setUserId(rs.getInt("user_id"));
-                o.setDataOrdine(rs.getTimestamp("data_ordine"));
-                o.setTotale(rs.getDouble("totale"));
-                o.setIndirizzoSpedizione(rs.getString("indirizzo_spedizione"));
-                o.setMetodoPagamento(rs.getString("metodo_pagamento"));
-                o.setStato(rs.getString("stato"));
-
-                list.add(o);
+                list.add(mapOrder(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,7 +203,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> doRetrieveByDateRange(String startDate, String endDate) 
     {
         List<Order> list = new ArrayList<>();
-        String sql = "SELECT * FROM orders WHERE data_ordine BETWEEN ? AND ?";
+        String sql = "SELECT * FROM orders WHERE order_date BETWEEN ? AND ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -154,20 +214,27 @@ public class OrderDaoImpl implements OrderDao {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Order o = new Order();
-
-                o.setId(rs.getInt("id"));
-                o.setUserId(rs.getInt("user_id"));
-                o.setDataOrdine(rs.getTimestamp("data_ordine"));
-                o.setTotale(rs.getDouble("totale"));
-                o.setStato(rs.getString("stato"));
-
-                list.add(o);
+                list.add(mapOrder(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return list;
+    }
+
+    private Order mapOrder(ResultSet rs) throws SQLException 
+    {
+        Order o = new Order();
+
+        o.setId(rs.getInt("id"));
+        o.setUserId(rs.getInt("user_id"));
+        o.setDataOrdine(rs.getTimestamp("order_date"));
+        o.setTotale(rs.getDouble("total"));
+        o.setIndirizzoSpedizione(rs.getString("shipping_address"));
+        o.setMetodoPagamento(rs.getString("payment_method"));
+        o.setStato(rs.getString("status"));
+
+        return o;
     }
 }

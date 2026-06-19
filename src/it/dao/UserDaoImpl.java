@@ -35,13 +35,13 @@ public class UserDaoImpl implements UserDao {
                 User u = new User();
 
                 u.setId(rs.getInt("id"));
-                u.setNome(rs.getString("nome"));
-                u.setCognome(rs.getString("cognome"));
+                u.setNome(rs.getString("first_name"));
+                u.setCognome(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
                 u.setPasswordHash(rs.getString("password_hash"));
-                u.setTelefono(rs.getString("telefono"));
-                u.setRuolo(rs.getString("ruolo"));
-                u.setDataRegistrazione(rs.getTimestamp("data_registrazione"));
+                u.setTelefono(rs.getString("phone"));
+                u.setRuolo(rs.getString("role"));
+                u.setDataRegistrazione(rs.getTimestamp("created_at"));
 
                 return u;
             }
@@ -82,7 +82,7 @@ public class UserDaoImpl implements UserDao {
     public void doSave(User u) 
     {
         String sql = "INSERT INTO users "
-                + "(nome, cognome, email, password_hash, telefono, ruolo) "
+                + "(first_name, last_name, email, password_hash, phone, role) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
@@ -93,7 +93,7 @@ public class UserDaoImpl implements UserDao {
             ps.setString(3, u.getEmail());
             ps.setString(4, u.getPasswordHash());
             ps.setString(5, u.getTelefono());
-            ps.setString(6, "CLIENTE");
+            ps.setString(6, "CUSTOMER");
 
             ps.executeUpdate();
         } catch (SQLException e) {
