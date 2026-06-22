@@ -54,6 +54,10 @@ CREATE TABLE products (
         ON DELETE SET NULL
 );
 
+INSERT INTO users (first_name, last_name, email, password_hash, role) VALUES
+('Marco', 'Manna', 'marco@shoestore.com', 'admin', 'ADMIN'),
+('Davide', 'Miele', 'davide@shoestore.com', 'admin', 'ADMIN');
+
 CREATE TABLE order_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
