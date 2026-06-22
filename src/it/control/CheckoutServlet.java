@@ -72,7 +72,7 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        
+        @SuppressWarnings("unchecked")
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         User user = (User) session.getAttribute("user");
         double total = 0;
@@ -125,7 +125,7 @@ public class CheckoutServlet extends HttpServlet {
         response.sendRedirect("OrdersServlet?id=" + orderId);
     }
 
-    
+    @SuppressWarnings("unchecked")
     private boolean isCartEmpty(HttpSession session) 
     {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
