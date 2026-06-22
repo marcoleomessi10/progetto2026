@@ -55,8 +55,8 @@ CREATE TABLE products (
 );
 
 INSERT INTO users (first_name, last_name, email, password_hash, role) VALUES
-('Marco', 'Manna', 'marco@shoestore.com', 'admin', 'ADMIN'),
-('Davide', 'Miele', 'davide@shoestore.com', 'admin', 'ADMIN');
+('Marco', 'Manna', 'marco@shoestore.com', 'admin1', 'ADMIN'),
+('Davide', 'Miele', 'davide@shoestore.com', 'admin1', 'ADMIN');
 
 CREATE TABLE order_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
