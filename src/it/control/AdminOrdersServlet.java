@@ -36,9 +36,10 @@ public class AdminOrdersServlet extends HttpServlet {
             return;
         }
 
-        String userId = request.getParameter("userId");
+        String userId    = request.getParameter("userId");
         String startDate = request.getParameter("startDate");
-        String endDate = request.getParameter("endDate");
+        String endDate   = request.getParameter("endDate");
+        String stato     = request.getParameter("stato");
         List<Order> orders;
 
         if (hasText(userId) && hasText(startDate) && hasText(endDate)) {
@@ -49,6 +50,12 @@ public class AdminOrdersServlet extends HttpServlet {
             orders = orderDao.doRetrieveByDateRange(startDate, endDate + " 23:59:59");
         } else {
             orders = orderDao.doRetrieveAll();
+        }
+
+        if (hasText(stato)) {
+            orders = orders.stream()
+                .filter(o -> stato.equals(o.getStato()))
+                .collect(java.util.stream.Collectors.toList());
         }
 
         String selectedId = request.getParameter("id");
@@ -64,7 +71,33 @@ public class AdminOrdersServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/admin/orders.jsp").forward(request, response);
     }
 
-    private boolean hasText(String value) 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        if (!AuthUtil.isAdmin(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        if (!AuthUtil.isValidToken(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        String action = request.getParameter("action");
+
+        if ("updateStatus".equals(action)) {
+            int orderId = Integer.parseInt(request.getParameter("id"));
+            String status = request.getParameter("stato");
+            orderDao.doUpdateStatus(orderId, status);
+            response.sendRedirect("AdminOrdersServlet?id=" + orderId);
+            return;
+        }
+
+        response.sendRedirect("AdminOrdersServlet");
+    }
+
+    private boolean hasText(String value)
     {
         return value != null && !value.isBlank();
     }
