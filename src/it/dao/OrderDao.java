@@ -22,4 +22,6 @@ public interface OrderDao {
     List<Order> doRetrieveAll();
 
     List<Order> doRetrieveByDateRange(String startDate, String endDate);
+
+    void doUpdateStatus(int orderId, String status);
 }
