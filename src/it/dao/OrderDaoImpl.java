@@ -223,6 +223,22 @@ public class OrderDaoImpl implements OrderDao {
         return list;
     }
 
+    @Override
+    public void doUpdateStatus(int orderId, String status)
+    {
+        String sql = "UPDATE orders SET status = ? WHERE id = ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            ps.setInt(2, orderId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Order mapOrder(ResultSet rs) throws SQLException 
     {
         Order o = new Order();
