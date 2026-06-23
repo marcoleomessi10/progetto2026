@@ -32,8 +32,17 @@ public class HomeServlet extends HttpServlet {
 
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Product> products = productDao.doRetrieveAll();
+		String categoria = request.getParameter("categoria");
+		List<Product> products;
+
+		if (categoria != null && !categoria.trim().isEmpty()) {
+			products = productDao.doRetrieveByCategoryName(categoria.trim());
+		} else {
+			products = productDao.doRetrieveAll();
+		}
+
 		request.setAttribute("products", products);
+		request.setAttribute("categoriaAttiva", categoria);
 		request.getRequestDispatcher("/WEB-INF/view/home.jsp").forward(request, response);
 	}
 

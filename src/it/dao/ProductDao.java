@@ -16,6 +16,8 @@ public interface ProductDao {
 
     List<Product> doRetrieveByCategory(int categoryId);
 
+    List<Product> doRetrieveByCategoryName(String categoryName);
+
     void doSave(Product product);
 
     void doUpdate(Product product);

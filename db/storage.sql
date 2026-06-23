@@ -78,13 +78,13 @@ INSERT IGNORE INTO categories (id, name, description) VALUES
 (3, 'Eleganti', 'Scarpe eleganti');
 
 INSERT IGNORE INTO products (id, name, description, brand, price, category, stock, image, image_path, active) VALUES
-(1,  'Air Runner',     'Sneaker sportiva comoda e leggera',                    'Nike',         129.99, 'Sneakers', 10, 'air-runner.png',     'images/air-runner.png',     1),
-(2,  'Street Classic', 'Scarpa casual per tutti i giorni',                     'Adidas',        89.99, 'Sneakers', 15, 'street-classic.png', 'images/street-classic.png', 1),
-(3,  'Run Pro',        'Scarpa tecnica da running',                            'Asics',        119.99, 'Running',   8, 'run-pro.png',        'images/run-pro.png',        1),
-(4,  'Elegant Black',  'Scarpa elegante nera in pelle',                        'Geox',         149.99, 'Eleganti',  6, 'elegant-black.png',  'images/elegant-black.png',  1),
-(5,  'Air Street 90',  'Sneaker casual comoda per tutti i giorni',             'Nike',          89.90, 'Sneakers', 17, 'air-street-90.png',  'images/air-street-90.png',  1),
-(6,  'RunFlex Pro',    'Scarpa leggera pensata per la corsa su strada',        'Adidas',       119.50, 'Running',  12, 'runflex-pro.png',    'images/runflex-pro.png',    1),
-(7,  'Classic Derby',  'Scarpa elegante in stile derby per occasioni formali', 'Geox',         139.00, 'Eleganti',  7, 'classic-derby.png',  'images/classic-derby.png',  1),
-(8,  'Urban Pulse',    'Sneaker urbana con suola ammortizzata',                'Puma',          74.99, 'Sneakers', 22, 'urban-pulse.png',    'images/urban-pulse.png',    1),
-(9,  'Marathon Light', 'Scarpa running traspirante con buon supporto',         'Asics',        129.90, 'Running',  10, 'marathon-light.png', 'images/marathon-light.png', 1),
-(10, 'LV skate',       'non per i poveri',                                     'Luis Vuitton', 1099.00,'Sneakers',  8, 'shoe.jpg',           'images/shoe.jpg',           1);
+(1,  'Air Runner',     'Sneaker sportiva comoda e leggera',                    'Nike',         129.99, 'Sneakers', 10, 'air-runner.svg',     'images/air-runner.svg',     1),
+(2,  'Street Classic', 'Scarpa casual per tutti i giorni',                     'Adidas',        89.99, 'Sneakers', 15, 'street-classic.svg', 'images/street-classic.svg', 1),
+(3,  'Run Pro',        'Scarpa tecnica da running',                            'Asics',        119.99, 'Running',   8, 'run-pro.svg',        'images/run-pro.svg',        1),
+(4,  'Elegant Black',  'Scarpa elegante nera in pelle',                        'Geox',         149.99, 'Eleganti',  6, 'elegant-black.svg',  'images/elegant-black.svg',  1),
+(5,  'Air Street 90',  'Sneaker casual comoda per tutti i giorni',             'Nike',          89.90, 'Sneakers', 17, 'air-street-90.svg',  'images/air-street-90.svg',  1),
+(6,  'RunFlex Pro',    'Scarpa leggera pensata per la corsa su strada',        'Adidas',       119.50, 'Running',  12, 'runflex-pro.svg',    'images/runflex-pro.svg',    1),
+(7,  'Classic Derby',  'Scarpa elegante in stile derby per occasioni formali', 'Geox',         139.00, 'Eleganti',  7, 'classic-derby.svg',  'images/classic-derby.svg',  1),
+(8,  'Urban Pulse',    'Sneaker urbana con suola ammortizzata',                'Puma',          74.99, 'Sneakers', 22, 'urban-pulse.svg',    'images/urban-pulse.svg',    1),
+(9,  'Marathon Light', 'Scarpa running traspirante con buon supporto',         'Asics',        129.90, 'Running',  10, 'marathon-light.svg', 'images/marathon-light.svg', 1),
+(10, 'LV skate',       'non per i poveri',                                     'Luis Vuitton', 1099.00,'Sneakers',  8, 'lv-skate.svg',       'images/lv-skate.svg',       1);

@@ -185,6 +185,41 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public List<Product> doRetrieveByCategoryName(String categoryName)
+    {
+        List<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM products WHERE category = ? AND active = TRUE";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, categoryName);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product();
+
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("name"));
+                p.setDescrizione(rs.getString("description"));
+                p.setMarca(rs.getString("brand"));
+                p.setPrezzo(rs.getDouble("price"));
+                p.setQuantitaDisponibile(rs.getInt("stock"));
+                p.setCategoria(rs.getString("category"));
+                p.setImmagine(rs.getString("image"));
+                p.setAttivo(rs.getBoolean("active"));
+                p.setDataCreazione(rs.getTimestamp("created_at"));
+
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    @Override
     public void doSave(Product p) 
     {
         String sql = "INSERT INTO products "

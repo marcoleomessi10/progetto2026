@@ -11,6 +11,7 @@
         (List<CartItem>) session.getAttribute("cart");
     User user =
         (User) session.getAttribute("user");
+    String categoriaAttiva = (String) request.getAttribute("categoriaAttiva");
     int cartCount = 0;
 
     if(cart != null) {
@@ -50,10 +51,10 @@
     <button class="nav-toggle" type="button" data-menu-toggle aria-expanded="false">Menu</button>
 
     <nav class="site-nav" data-menu>
-        <a href="#catalogo">Novita</a>
-        <a href="#catalogo">Sneakers</a>
-        <a href="#catalogo">Running</a>
-        <a href="#catalogo">Eleganti</a>
+        <a href="HomeServlet#catalogo">Novita</a>
+        <a href="HomeServlet?categoria=Sneakers#catalogo" <%= "Sneakers".equals(categoriaAttiva) ? "class=\"nav-active\"" : "" %>>Sneakers</a>
+        <a href="HomeServlet?categoria=Running#catalogo" <%= "Running".equals(categoriaAttiva) ? "class=\"nav-active\"" : "" %>>Running</a>
+        <a href="HomeServlet?categoria=Eleganti#catalogo" <%= "Eleganti".equals(categoriaAttiva) ? "class=\"nav-active\"" : "" %>>Eleganti</a>
         <% if(user != null) { %>
             <a href="OrdersServlet">I miei ordini</a>
         <% } %>
@@ -82,9 +83,9 @@
     </section>
 
     <section class="category-rail" aria-label="Categorie">
-        <a href="#catalogo"><strong>01</strong><span>Sneakers</span></a>
-        <a href="#catalogo"><strong>02</strong><span>Running</span></a>
-        <a href="#catalogo"><strong>03</strong><span>Eleganti</span></a>
+        <a href="HomeServlet?categoria=Sneakers#catalogo"><strong>01</strong><span>Sneakers</span></a>
+        <a href="HomeServlet?categoria=Running#catalogo"><strong>02</strong><span>Running</span></a>
+        <a href="HomeServlet?categoria=Eleganti#catalogo"><strong>03</strong><span>Eleganti</span></a>
         <a href="CartServlet"><strong>04</strong><span>Il tuo carrello</span></a>
     </section>
 
@@ -92,9 +93,17 @@
         <div class="catalog-title">
             <div>
                 <p class="eyebrow">Scelti per te</p>
-                <h2>Ultimi arrivi</h2>
+                <% if(categoriaAttiva != null && !categoriaAttiva.isEmpty()) { %>
+                    <h2><%= categoriaAttiva %></h2>
+                <% } else { %>
+                    <h2>Ultimi arrivi</h2>
+                <% } %>
             </div>
-            <p>Design pulito, comfort quotidiano e performance.</p>
+            <p>Design pulito, comfort quotidiano e performance.
+                <% if(categoriaAttiva != null && !categoriaAttiva.isEmpty()) { %>
+                    &nbsp;&mdash;&nbsp;<a href="HomeServlet#catalogo" class="filter-reset">Vedi tutti</a>
+                <% } %>
+            </p>
         </div>
 
         <div class="products">
