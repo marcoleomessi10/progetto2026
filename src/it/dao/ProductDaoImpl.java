@@ -188,8 +188,8 @@ public class ProductDaoImpl implements ProductDao {
     public void doSave(Product p) 
     {
         String sql = "INSERT INTO products "
-                + "(name, description, brand, price, category, quantity, stock, image, image_path, active) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(name, description, brand, price, category, stock, image, image_path, active) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -200,10 +200,9 @@ public class ProductDaoImpl implements ProductDao {
             ps.setDouble(4, p.getPrezzo());
             ps.setString(5, p.getCategoria());
             ps.setInt(6, p.getQuantitaDisponibile());
-            ps.setInt(7, p.getQuantitaDisponibile());
-            ps.setString(8, p.getImmagine());
-            ps.setString(9, "images/" + p.getImmagine());
-            ps.setBoolean(10, p.isAttivo());
+            ps.setString(7, p.getImmagine());
+            ps.setString(8, "images/" + p.getImmagine());
+            ps.setBoolean(9, p.isAttivo());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -215,7 +214,7 @@ public class ProductDaoImpl implements ProductDao {
     public void doUpdate(Product p) 
     {
         String sql = "UPDATE products SET "
-                + "name = ?, description = ?, brand = ?, price = ?, category = ?, quantity = ?, "
+                + "name = ?, description = ?, brand = ?, price = ?, category = ?, "
                 + "stock = ?, image = ?, image_path = ?, active = ? "
                 + "WHERE id = ?";
 
@@ -228,11 +227,10 @@ public class ProductDaoImpl implements ProductDao {
             ps.setDouble(4, p.getPrezzo());
             ps.setString(5, p.getCategoria());
             ps.setInt(6, p.getQuantitaDisponibile());
-            ps.setInt(7, p.getQuantitaDisponibile());
-            ps.setString(8, p.getImmagine());
-            ps.setString(9, "images/" + p.getImmagine());
-            ps.setBoolean(10, p.isAttivo());
-            ps.setInt(11, p.getId());
+            ps.setString(7, p.getImmagine());
+            ps.setString(8, "images/" + p.getImmagine());
+            ps.setBoolean(9, p.isAttivo());
+            ps.setInt(10, p.getId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -243,14 +241,13 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateQuantity(int productId, int quantity) 
     {
-        String sql = "UPDATE products SET quantity = ?, stock = ? WHERE id = ?";
+        String sql = "UPDATE products SET stock = ? WHERE id = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, quantity);
-            ps.setInt(2, quantity);
-            ps.setInt(3, productId);
+            ps.setInt(2, productId);
 
             ps.executeUpdate();
         } catch (SQLException e) {
