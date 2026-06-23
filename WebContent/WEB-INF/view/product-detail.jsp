@@ -25,7 +25,7 @@
 <h1><%= product.getNome() %></h1>
 
 <div class="product-card">
-    <img src="images/<%= product.getImmagine() %>?v=2" alt="<%= product.getNome() %>" width="220">
+    <img src="images/<%= product.getImmagine() %>?v=15" alt="<%= product.getNome() %>" width="220">
     <p>Marca: <%= product.getMarca() %></p>
     <p>Categoria: <%= product.getCategoria() %></p>
     <p><%= product.getDescrizione() %></p>

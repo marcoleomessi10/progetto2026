@@ -89,7 +89,7 @@
                 <% for(CartItem item : cart) { %>
                     <article class="cart-item">
                         <a class="cart-item-image" href="ProductServlet?id=<%= item.getProduct().getId() %>">
-                            <img src="images/<%= item.getProduct().getImmagine() %>?v=2"
+                            <img src="images/<%= item.getProduct().getImmagine() %>?v=15"
                                  alt="<%= item.getProduct().getNome() %>">
                         </a>
 

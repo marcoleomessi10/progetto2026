@@ -115,7 +115,7 @@
 
                 <article class="product-card">
                     <a class="product-image-link" href="ProductServlet?id=<%= p.getId() %>">
-                        <img src="images/<%= p.getImmagine() %>?v=2" alt="<%= p.getNome() %>" loading="lazy">
+                        <img src="images/<%= p.getImmagine() %>?v=15" alt="<%= p.getNome() %>" loading="lazy">
                         <span class="product-arrow">Apri</span>
                     </a>
 
