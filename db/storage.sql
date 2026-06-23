@@ -58,6 +58,23 @@ INSERT INTO users (first_name, last_name, email, password_hash, role) VALUES
 ('Marco', 'Manna', 'marco@shoestore.com', 'admin1', 'ADMIN'),
 ('Davide', 'Miele', 'davide@shoestore.com', 'admin1', 'ADMIN');
 
+INSERT INTO categories (id, name, description) VALUES
+(1, 'Sneakers', 'Scarpe sportive'),
+(2, 'Running',  'Scarpe da corsa'),
+(3, 'Eleganti', 'Scarpe eleganti');
+
+INSERT INTO products (id, name, description, brand, price, category, quantity, stock, image, image_path, active) VALUES
+(1,  'Air Runner',    'Sneaker sportiva comoda e leggera',                    'Nike',        129.99, 'Sneakers', 10, 10, 'air-runner.png',    'images/air-runner.png',    1),
+(2,  'Street Classic','Scarpa casual per tutti i giorni',                     'Adidas',       89.99, 'Sneakers', 15, 15, 'street-classic.png','images/street-classic.png', 1),
+(3,  'Run Pro',       'Scarpa tecnica da running',                            'Asics',       119.99, 'Running',   8,  8, 'run-pro.png',       'images/run-pro.png',        1),
+(4,  'Elegant Black', 'Scarpa elegante nera in pelle',                        'Geox',        149.99, 'Eleganti',  6,  6, 'elegant-black.png', 'images/elegant-black.png',  1),
+(5,  'Air Street 90', 'Sneaker casual comoda per tutti i giorni',             'Nike',         89.90, 'Sneakers', 17, 17, 'air-street-90.png', 'images/air-street-90.png',  1),
+(6,  'RunFlex Pro',   'Scarpa leggera pensata per la corsa su strada',        'Adidas',      119.50, 'Running',  12, 12, 'runflex-pro.png',   'images/runflex-pro.png',    1),
+(7,  'Classic Derby', 'Scarpa elegante in stile derby per occasioni formali', 'Geox',        139.00, 'Eleganti',  7,  7, 'classic-derby.png', 'images/classic-derby.png',  1),
+(8,  'Urban Pulse',   'Sneaker urbana con suola ammortizzata',                'Puma',         74.99, 'Sneakers', 22, 22, 'urban-pulse.png',   'images/urban-pulse.png',    1),
+(9,  'Marathon Light','Scarpa running traspirante con buon supporto',         'Asics',       129.90, 'Running',  10, 10, 'marathon-light.png','images/marathon-light.png', 1),
+(10, 'LV skate',      'non per i poveri',                                     'Luis Vuitton',1099.00,'Sneakers',  8,  8, 'shoe.jpg',          'images/shoe.jpg',           1);
+
 CREATE TABLE order_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
