@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import it.dao.UserDao;
 import it.dao.UserDaoImpl;
 import it.model.User;
+import it.util.PasswordUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -58,7 +59,7 @@ public class RegisterServlet extends HttpServlet {
         user.setNome(nome);
         user.setCognome(cognome);
         user.setEmail(email);
-        user.setPasswordHash(password);
+        user.setPasswordHash(PasswordUtil.hash(password));
         user.setTelefono(telefono);
 
         userDao.doSave(user);

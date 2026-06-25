@@ -69,8 +69,8 @@ CREATE TABLE IF NOT EXISTS order_items (
 );
 
 INSERT IGNORE INTO users (first_name, last_name, email, password_hash, role) VALUES
-('Marco',  'Manna',  'marco@shoestore.com',  'admin1', 'ADMIN'),
-('Davide', 'Miele',  'davide@shoestore.com', 'admin1', 'ADMIN');
+('Marco',  'Manna',  'marco@shoestore.com',  '2084fcaf8c74cb75b4052259a2cf8a23:4b646bbcf5cd80ee3a2ea8f41144a12f2e4b10a04d0828c438ef577040fc6802', 'ADMIN'),
+('Davide', 'Miele',  'davide@shoestore.com', '3da0506a36e42f6ad8eccd3ec653d90e:8c40feaf1cb570a2a02ffc81805e12f03782a6fb772ce0ae5c8953d7e2a0cd4e', 'ADMIN');
 
 INSERT IGNORE INTO categories (id, name, description) VALUES
 (1, 'Sneakers', 'Scarpe sportive'),

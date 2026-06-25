@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import it.model.User;
+import it.util.PasswordUtil;
 
 public class UserDaoImpl implements UserDao {
 
@@ -19,30 +20,29 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User doRetrieveByEmailPassword(String email, String passwordHash) 
+    public User doRetrieveByEmailPassword(String email, String password)
     {
-        String sql = "SELECT * FROM users WHERE email = ? AND password_hash = ?";
+        String sql = "SELECT * FROM users WHERE email = ? AND active = 1";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, email);
-            ps.setString(2, passwordHash);
-
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                User u = new User();
+                String stored = rs.getString("password_hash");
+                if (!PasswordUtil.verify(password, stored)) return null;
 
+                User u = new User();
                 u.setId(rs.getInt("id"));
                 u.setNome(rs.getString("first_name"));
                 u.setCognome(rs.getString("last_name"));
                 u.setEmail(rs.getString("email"));
-                u.setPasswordHash(rs.getString("password_hash"));
+                u.setPasswordHash(stored);
                 u.setTelefono(rs.getString("phone"));
                 u.setRuolo(rs.getString("role"));
                 u.setDataRegistrazione(rs.getTimestamp("created_at"));
-
                 return u;
             }
         } catch (SQLException e) {
